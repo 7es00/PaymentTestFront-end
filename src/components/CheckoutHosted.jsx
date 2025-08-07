@@ -2,81 +2,66 @@ import React, { useState } from "react";
 
 export default function CheckoutHosted() {
   const [customer, setCustomer] = useState({ name: "", email: "" });
-  const [order, setOrder] = useState({ amount: 100, currency: "USD" });
+  const [order, setOrder] = useState({ amount: 100, currency: "USD", reference: "order-hosted-123" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChangeCustomer = e =>
-    setCustomer({ ...customer, [e.target.name]: e.target.value });
+  const handleChangeCustomer = (e) => setCustomer({ ...customer, [e.target.name]: e.target.value });
+  const handleChangeOrder = (e) => setOrder({ ...order, [e.target.name]: e.target.value });
 
-  const handleChangeOrder = e =>
-    setOrder({ ...order, [e.target.name]: e.target.value });
-
-  const handlePay = async e => {
+  const handlePay = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
+      const response = await fetch("https://players-sales.fly.dev/api/v1/payments/create-hosted-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Number(order.amount),
+          currency: order.currency,
+          reference: order.reference,
+          customer,
+          billing: { address: { country: "EG" } },
+        }),
+      });
 
-      const response = await fetch(
-        "https://players-sales.fly.dev/api/v1/payments/create-hosted-payment",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" }, // مهم جدًا
-          body: JSON.stringify({
-            amount: Number(order.amount), // ضروري يكون رقم
-            currency: order.currency,
-            customer,
-            billing: { address: { country: "EG" } }
-          })
-        }
-      );
-
-      console.log("Starting payment process try...");
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err?.error || "Server error");
+      }
 
       const data = await response.json();
-
-      if (response.ok && data.redirect_url) {
+      if (data.redirect_url) {
         window.open(data.redirect_url, "_blank");
       } else {
-        setError(data.error || "لم يتم الحصول على رابط الدفع.");
-        // Console error for debugging
-        console.error("API Error:", data);
+        setError("لم يتم الحصول على رابط الدفع.");
       }
     } catch (err) {
-      setError("حدث خطأ أثناء بدء الدفع.");
-      console.error("Network Error:", err);
+      setError("حدث خطأ أثناء بدء الدفع: " + err.message);
     }
     setLoading(false);
   };
 
   return (
-    <div
-      style={{
-        background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: "20px",
-          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
-          padding: 32,
-          width: 400,
-          maxWidth: "95vw"
-        }}
-      >
-        <h2
-          style={{
-            textAlign: "center",
-            color: "#512da8",
-            marginBottom: 30
-          }}
-        >
+    <div style={{
+      background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}>
+      <div style={{
+        background: "#fff",
+        borderRadius: "20px",
+        boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+        padding: 32,
+        width: 400,
+        maxWidth: "95vw"
+      }}>
+        <h2 style={{ textAlign: "center", color: "#512da8", marginBottom: 30 }}>
           دفع عبر Checkout.com (صفحة خارجية)
         </h2>
         <form onSubmit={handlePay}>
@@ -88,13 +73,7 @@ export default function CheckoutHosted() {
               value={customer.name}
               onChange={handleChangeCustomer}
               required
-              style={{
-                width: "100%",
-                padding: 10,
-                marginTop: 5,
-                borderRadius: 8,
-                border: "1px solid #bbb"
-              }}
+              style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
           <div style={{ marginBottom: 18 }}>
@@ -105,13 +84,7 @@ export default function CheckoutHosted() {
               value={customer.email}
               onChange={handleChangeCustomer}
               required
-              style={{
-                width: "100%",
-                padding: 10,
-                marginTop: 5,
-                borderRadius: 8,
-                border: "1px solid #bbb"
-              }}
+              style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
           <div style={{ marginBottom: 18 }}>
@@ -122,13 +95,7 @@ export default function CheckoutHosted() {
               value={order.amount}
               onChange={handleChangeOrder}
               required
-              style={{
-                width: "100%",
-                padding: 10,
-                marginTop: 5,
-                borderRadius: 8,
-                border: "1px solid #bbb"
-              }}
+              style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
           <div style={{ marginBottom: 18 }}>
@@ -139,13 +106,18 @@ export default function CheckoutHosted() {
               value={order.currency}
               onChange={handleChangeOrder}
               required
-              style={{
-                width: "100%",
-                padding: 10,
-                marginTop: 5,
-                borderRadius: 8,
-                border: "1px solid #bbb"
-              }}
+              style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
+            />
+          </div>
+          <div style={{ marginBottom: 18 }}>
+            <label>رقم الأوردر</label>
+            <input
+              type="text"
+              name="reference"
+              value={order.reference}
+              onChange={handleChangeOrder}
+              required
+              style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
           <button
@@ -168,19 +140,9 @@ export default function CheckoutHosted() {
             {loading ? "جارٍ تحويلك للدفع..." : "ادفع الآن"}
           </button>
         </form>
-        {error && (
-          <div
-            style={{
-              marginTop: 20,
-              color: "#c00",
-              background: "#ffebee",
-              borderRadius: 6,
-              padding: 12
-            }}
-          >
-            {error}
-          </div>
-        )}
+        {error && <div style={{
+          marginTop: 20, color: "#c00", background: "#ffebee", borderRadius: 6, padding: 12
+        }}>{error}</div>}
       </div>
     </div>
   );
