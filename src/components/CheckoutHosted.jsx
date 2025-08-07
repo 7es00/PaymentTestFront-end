@@ -16,8 +16,8 @@ export default function CheckoutHosted() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    console.log("Starting payment process...");
     try {
+
       const response = await fetch(
         "https://players-sales.fly.dev/api/v1/payments/create-hosted-payment",
         {
@@ -31,6 +31,9 @@ export default function CheckoutHosted() {
           })
         }
       );
+
+      console.log("Starting payment process try...");
+
       const data = await response.json();
 
       if (response.ok && data.redirect_url) {
