@@ -1,0 +1,9 @@
+.card-frame {
+  width: 100%;
+  min-height: 60px;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  margin-top: 8px;
+  padding: 10px 12px;
+}
