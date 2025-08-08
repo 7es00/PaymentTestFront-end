@@ -34,7 +34,8 @@ export default function PaymentResult() {
         if (order.status === "Authorized" || order.status === "Captured" || order.status === "Paid") {
             statusText = "✅ تم الدفع بنجاح!";
         } else if (order.status === "Declined" || order.status === "Canceled" || order.status === "Expired") {
-            statusText = "❌ لم يتم الدفع. تم رفض البطاقه.";
+            statusText = "❌ لم يتم الدفع. تم رفض البطاقه." + order.status + " " + order.response_summary;
+            
         } else {
             statusText = `⚠️ حالة الدفع: ${order.status}`;
         }
