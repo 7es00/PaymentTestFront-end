@@ -23,7 +23,7 @@ export default function PaymentResult() {
         } else if (errorMsg) {
             setError("❌ فشل الدفع أو لم تكتمل العملية.");
         } else {
-            setError("❌ لا يوجد أي بيانات عن العملية.");
+            setError("❌s لا يوجد أي بيانات عن العملية.");
         }
     }, []);
 
