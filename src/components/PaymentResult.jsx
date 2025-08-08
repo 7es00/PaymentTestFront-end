@@ -4,14 +4,12 @@ export default function PaymentResult() {
     const [order, setOrder] = useState(null);
     const [error, setError] = useState("");
     const [cancel, setCancel] = useState(false);
-    const [fail, setfail] = useState(false);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const orderData = urlParams.get("order");
         const errorMsg = urlParams.get("error");
         const cancelParam = urlParams.get("cancel");
-        const failParam = urlParams.get("fail");
 
         if (cancelParam) {
             setCancel(true);
@@ -24,14 +22,8 @@ export default function PaymentResult() {
             }
         } else if (errorMsg) {
             setError("❌ فشل الدفع أو لم تكتمل العملية.");
-            
-        } 
-        else if (failParam) {
-            setfail(true);  
-            setError("❌ فشلت العمليه ");
-        }
-        else {
-            setError("❌s لا يوجد أي بيانات عن العملية.");
+        } else {
+            setError("❌ لا يوجد أي بيانات عن العملية.");
         }
     }, []);
 
@@ -42,7 +34,7 @@ export default function PaymentResult() {
         if (order.status === "Authorized" || order.status === "Captured" || order.status === "Paid") {
             statusText = "✅ تم الدفع بنجاح!";
         } else if (order.status === "Declined" || order.status === "Canceled" || order.status === "Expired") {
-            statusText = "❌ لم يتم الدفع. تم رفض أو إلغاء العملية.";
+            statusText = "❌ لم يتم الدفع. تم رفض البطاقه.";
         } else {
             statusText = `⚠️ حالة الدفع: ${order.status}`;
         }
