@@ -23,6 +23,7 @@ export default function CheckoutHosted() {
           amount: Number(order.amount),
           currency: order.currency,
           reference: order.reference,
+          userId: "TESTUUUUUUUUUUUUUUUUUSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEER",
           customer,
           billing: { address: { country: "EG" } },
         }),

@@ -84,7 +84,8 @@ export default function PaymentResult() {
 
                            <b> Payment: </b>{statusText}
                             <br></br>
-                           <b> Reason:</b> {order.userId} 
+                           <b> Reason:</b> {action} 
+                           <b> userid:</b> {order.userId} 
 
                         </span>
                     }
