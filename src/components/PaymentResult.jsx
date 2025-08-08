@@ -30,7 +30,7 @@ export default function PaymentResult() {
     let statusText = "";
     let action = "";
     let ordertext = "";
-
+let users = "";
     if (cancel) {
         statusText = "⚠️ لقد قمت بإلغاء عملية الدفع.";
     } else if (order) {
@@ -40,6 +40,7 @@ export default function PaymentResult() {
 
             statusText = order.status;
             action = order.action;
+            users = order.userID;
             ordertext = "Payment was not successful.";
 
 
@@ -85,7 +86,7 @@ export default function PaymentResult() {
                            <b> Payment: </b>{statusText}
                             <br></br>
                            <b> Reason:</b> {action} 
-                           <b> userid:</b> {order.userId} 
+                           <b> userid:</b> {users} 
 
                         </span>
                     }
