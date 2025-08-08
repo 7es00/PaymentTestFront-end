@@ -14,7 +14,7 @@ export default function CheckoutHosted() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("https://webhook.site/7a4eb058-e88d-408b-beca-557bcd57742a", {
+      const response = await fetch("https://players-sales.fly.dev/api/v1/payments/create-hosted-payment", {
         method: "POST",
         headers: {
   "Content-Type": "application/json"
