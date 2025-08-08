@@ -4,12 +4,14 @@ export default function PaymentResult() {
     const [order, setOrder] = useState(null);
     const [error, setError] = useState("");
     const [cancel, setCancel] = useState(false);
+    const [fail, setfail] = useState(false);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const orderData = urlParams.get("order");
         const errorMsg = urlParams.get("error");
         const cancelParam = urlParams.get("cancel");
+        const failParam = urlParams.get("fail");
 
         if (cancelParam) {
             setCancel(true);
@@ -22,7 +24,13 @@ export default function PaymentResult() {
             }
         } else if (errorMsg) {
             setError("❌ فشل الدفع أو لم تكتمل العملية.");
-        } else {
+            
+        } 
+        else if (failParam) {
+            setfail(true);  
+            setError("❌ فشلت العمليه ");
+        }
+        else {
             setError("❌s لا يوجد أي بيانات عن العملية.");
         }
     }, []);
