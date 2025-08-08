@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function CheckoutHosted() {
-  const [customer, setCustomer] = useState({ name: "", email: "" });
+  const [customer, setCustomer] = useState({ name: "", email: "", userid: "" });
   const [order, setOrder] = useState({ amount: 100, currency: "USD", reference: "order-hosted-123" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -17,13 +17,13 @@ export default function CheckoutHosted() {
       const response = await fetch("https://players-sales.fly.dev/api/v1/payments/create-hosted-payment", {
         method: "POST",
         headers: {
-  "Content-Type": "application/json"
-},
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           amount: Number(order.amount),
           currency: order.currency,
           reference: order.reference,
-          userId: "TESTUUUUUUUUUUUUUUUUUSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEER",
+          userId: customer.userid, // Using userId from the input field
           customer,
           billing: { address: { country: "EG" } },
         }),
@@ -73,7 +73,16 @@ export default function CheckoutHosted() {
               name="name"
               value={customer.name}
               onChange={handleChangeCustomer}
-              
+              style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
+            />
+          </div>
+          <div style={{ marginBottom: 18 }}>
+            <label>رقم المستخدم (userID)</label>
+            <input
+              type="text"
+              name="userid"
+              value={customer.userid}
+              onChange={handleChangeCustomer}
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -84,7 +93,6 @@ export default function CheckoutHosted() {
               name="email"
               value={customer.email}
               onChange={handleChangeCustomer}
-              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -95,7 +103,6 @@ export default function CheckoutHosted() {
               name="amount"
               value={order.amount}
               onChange={handleChangeOrder}
-              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -106,7 +113,6 @@ export default function CheckoutHosted() {
               name="currency"
               value={order.currency}
               onChange={handleChangeOrder}
-              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -117,7 +123,6 @@ export default function CheckoutHosted() {
               name="reference"
               value={order.reference}
               onChange={handleChangeOrder}
-              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
