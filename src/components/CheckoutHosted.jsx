@@ -17,8 +17,8 @@ export default function CheckoutHosted() {
       const response = await fetch("https://players-sales.fly.dev/api/v1/payments/create-hosted-payment", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
+  "Content-Type": "application/json"
+},
         body: JSON.stringify({
           amount: Number(order.amount),
           currency: order.currency,
