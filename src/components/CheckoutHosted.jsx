@@ -72,7 +72,7 @@ export default function CheckoutHosted() {
               name="name"
               value={customer.name}
               onChange={handleChangeCustomer}
-              required
+              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -83,7 +83,7 @@ export default function CheckoutHosted() {
               name="email"
               value={customer.email}
               onChange={handleChangeCustomer}
-              required
+              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -94,7 +94,7 @@ export default function CheckoutHosted() {
               name="amount"
               value={order.amount}
               onChange={handleChangeOrder}
-              required
+              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -105,7 +105,7 @@ export default function CheckoutHosted() {
               name="currency"
               value={order.currency}
               onChange={handleChangeOrder}
-              required
+              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
@@ -116,7 +116,7 @@ export default function CheckoutHosted() {
               name="reference"
               value={order.reference}
               onChange={handleChangeOrder}
-              required
+              
               style={{ width: "100%", padding: 10, marginTop: 5, borderRadius: 8, border: "1px solid #bbb" }}
             />
           </div>
