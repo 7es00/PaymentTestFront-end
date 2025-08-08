@@ -28,14 +28,24 @@ export default function PaymentResult() {
     }, []);
 
     let statusText = "";
+    let action = "";
+    let ordertext = "";
+
     if (cancel) {
         statusText = "⚠️ لقد قمت بإلغاء عملية الدفع.";
     } else if (order) {
         if (order.status === "Authorized" || order.status === "Captured" || order.status === "Paid") {
             statusText = "✅ تم الدفع بنجاح!";
         } else if (order.status === "Declined" || order.status === "Canceled" || order.status === "Expired") {
-            statusText = "❌ لم يتم الدفع. تم رفض البطاقه." + order.status + " " + order.action + " " + order;
-            
+
+            statusText = order.status;
+            action = order.action;
+            ordertext = "Payment was not successful.";
+
+
+
+
+
         } else {
             statusText = `⚠️ حالة الدفع: ${order.status}`;
         }
@@ -65,8 +75,18 @@ export default function PaymentResult() {
                 </h2>
                 <div style={{ marginBottom: 24, minHeight: 70 }}>
                     {error
-                        ? <span>{error}</span>
-                        : <span>{statusText}</span>
+                        ? <span>{error}</span> : <span>
+
+                            <nav style={{
+                                fontSize: "20px",                           
+                            }}>{ordertext}</nav>
+                            <br></br>
+
+                           <b> Payment: </b>{statusText}
+                            <br></br>
+                           <b> Reason:</b> {action}
+
+                        </span>
                     }
                 </div>
                 <button
